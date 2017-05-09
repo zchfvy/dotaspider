@@ -18,7 +18,9 @@ MAX_DOS = 3
 players = []
 with open(PLAYERSFILE) as pf:
     for line in pf:
-        players.append(line)
+        line = line.strip()
+        if line:
+            players.append(line)
 
 acc_id, dos = players.pop(0).split(',')
 
@@ -42,4 +44,6 @@ players.append(','.join([acc_id, dos]))
 
 with open(PLAYERSFILE, 'w+') as pf:
     for pl in players:
-        pf.write(pl + '\n')
+        pl = pl.strip()
+        if pl:
+            pf.write(pl + '\n')
