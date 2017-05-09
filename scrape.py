@@ -12,7 +12,7 @@ DETAILS_URI="https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?
 ROOT = os.path.dirname(os.path.realpath(__file__))
 OUT_DIR = os.path.join(ROOT, 'matches')
 
-PLAYERSFILE = 'players.txt'
+PLAYERSFILE = os.path.join(ROOT, 'players.txt')
 MAX_DOS = 3
 
 players = []
