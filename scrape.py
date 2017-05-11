@@ -26,19 +26,20 @@ acc_id, dos = players.pop(0).split(',')
 
 r = requests.get(HISTORY_URI + urlencode({'key': API_KEY, 'account_id':acc_id})).text
 history = json.loads(r)
-for m in history['result']['matches']:
-    if len(m['players']) == 10:
-        time.sleep(1)
-        data = requests.get(DETAILS_URI + urlencode({'key': API_KEY, 'match_id': m['match_id']})).text
-        with open(os.path.join(OUT_DIR, str(m['match_id']) + '.json'), 'w') as f:
-            f.write(data)
+if 'matches' in history['result']:
+    for m in history['result']['matches']:
+        if len(m['players']) == 10:
+            time.sleep(1)
+            data = requests.get(DETAILS_URI + urlencode({'key': API_KEY, 'match_id': m['match_id']})).text
+            with open(os.path.join(OUT_DIR, str(m['match_id']) + '.json'), 'w') as f:
+                f.write(data)
 
-        next_dos = int(dos) + 1
-        if next_dos <= MAX_DOS:
-            jsondata = json.loads(data)
-            for pl in [p['account_id'] for p in jsondata['result']['players']]:
-                if pl not in players:
-                    players.append(','.join([str(pl), str(next_dos)]))
+            next_dos = int(dos) + 1
+            if next_dos <= MAX_DOS:
+                jsondata = json.loads(data)
+                for pl in [p['account_id'] for p in jsondata['result']['players']]:
+                    if pl not in players:
+                        players.append(','.join([str(pl), str(next_dos)]))
 
 players.append(','.join([acc_id, dos]))
 
