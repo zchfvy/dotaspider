@@ -1,6 +1,7 @@
 import requests
 from urllib import urlencode
 import json
+import sys
 import os
 import time
 
@@ -26,6 +27,8 @@ acc_id, dos = players.pop(0).split(',')
 
 r = requests.get(HISTORY_URI + urlencode({'key': API_KEY, 'account_id':acc_id})).text
 history = json.loads(r)
+if 'result' not in history:
+    sys.exit(0)
 if 'matches' in history['result']:
     for m in history['result']['matches']:
         if len(m['players']) == 10:
