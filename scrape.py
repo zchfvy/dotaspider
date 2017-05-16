@@ -34,12 +34,16 @@ if 'matches' in history['result']:
             with open(os.path.join(OUT_DIR, str(m['match_id']) + '.json'), 'w') as f:
                 f.write(data)
 
-            next_dos = int(dos) + 1
-            if next_dos <= MAX_DOS:
-                jsondata = json.loads(data)
-                for pl in [p['account_id'] for p in jsondata['result']['players']]:
-                    if pl not in players:
-                        players.append(','.join([str(pl), str(next_dos)]))
+            try:
+                next_dos = int(dos) + 1
+                if next_dos <= MAX_DOS:
+                    jsondata = json.loads(data)
+                    for pl in [p['account_id'] for p in jsondata['result']['players']]:
+                        if pl not in players:
+                            players.append(','.join([str(pl), str(next_dos)]))
+            except:
+                print("Error scraping match:", m['match_id'])
+                continue
 
 players.append(','.join([acc_id, dos]))
 
